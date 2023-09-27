@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=  , initial-scale=1.0">
+    <link rel="stylesheet" href="react_app.css">
+    <link rel='stylesheet' href='https://unpkg.com/emoji.css/dist/emoji.min.css'>
+    <title>React App</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span class="ec ec-dart"></span>
+        </div>
+        <div class="options">
+            <h1 class="getinfo" id="getinfo" onclick="getINFO()">INFOs</h1>
+        </div>
+    </header>
+    <section>
+        <div class="cont" id="cont">
+            <div id="loader">
+            </div>
+        </div>
+    </section>
+    <script>
+let cont = document.getElementById("cont");
+var loader =document.getElementById("loader");
+let API = async () => {
+  let api = await fetch("https://reqres.in/api/users?page=1");
+  let jsn = await api.json();
+  loader.classList.remove("loader");
+  let data = jsn.data
+    .map((data) => {
+      return `<div class="card">
+                <div class="profile">
+                    <div class="pic"  style="background-image:url(${data.avatar});">
+                    </div>
+                    <h1>User No. ${data.id}</h1>
+                </div>
+                <div class="details">
+                    <h1>${data.first_name} ${data.last_name}</h1>
+                    <h3>${data.email}</h3>
+                </div>     
+        </div>`;
+    })
+    .join("");
+  cont.innerHTML = data;
+};
+function getINFO(){
+    loader.classList.add("loader");
+    setTimeout(() => {
+     API();
+  }, 4000);
+}
+    </script>
+</body>
+</html>
